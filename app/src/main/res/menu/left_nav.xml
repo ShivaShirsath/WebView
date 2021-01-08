@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/item_user"
+            android:title="ShivaShirsath" />
+        <item
+            android:id="@+id/item_newRepo"
+            android:title="New" />
+		<item
+            android:id="@+id/item_repo"
+            android:title="Repositories" />
+        <item
+            android:id="@+id/item_project"
+            android:title="Projects" />
+
+        <item
+            android:id="@+id/item_package"
+            android:title="Packages" />
+
+    </group>
+
+    <item android:title="Settings">
+        <menu>
+            <item
+                android:id="@+id/item_settings"
+				android:title="Settings" />
+        </menu>
+    </item>
+
+</menu>

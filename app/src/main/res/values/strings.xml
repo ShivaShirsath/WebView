@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">
+        WebView
+    </string>
+
+    <!-- Copy this Block and do like this for others 👇 -->
+    <string name="id">        <!-- Replace id to your id -->
+        Content               <!-- Replace Content to your Content. -->
+    </string>         
+    <!-- Like following 👇 -->
+
+    <string name="tv">
+        Shiva is Here ! 🤘 \n
+        You Must Remember Who I am.😁 
+    </string>
+
+</resources>
