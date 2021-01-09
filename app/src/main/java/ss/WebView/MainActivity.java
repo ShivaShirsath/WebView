@@ -90,8 +90,13 @@ public class MainActivity extends AppCompatActivity{
         settings.setDisplayZoomControls(false); 
 
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-        webView.setScrollbarFadingEnabled(false);
-
+       
+		webView.setScrollbarFadingEnabled(false);
+        
+        settings.setMinimumFontSize(1);
+        settings.setMinimumLogicalFontSize(1);
+        settings.setAllowFileAccess(true);
+        settings.setAllowContentAccess(true);  
 
 		if(Build.VERSION.SDK_INT >= 21){  
 			settings.setMixedContentMode(0);  
