@@ -18,6 +18,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -38,7 +39,6 @@ import java.io.File;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity{
-    private Activity activity;
     private WebView webView;
 	private DrawerLayout drawer_layout;
 	private NavigationView left_nav, right_nav;
@@ -48,8 +48,7 @@ public class MainActivity extends AppCompatActivity{
 	private ValueCallback<Uri[]> UMA;
 	private SwipeRefreshLayout refresh;
 	private long backPressedTime=0;
-	private View fullScreen;
-
+	
 	@SuppressLint({"SetJavaScriptEnabled", "ObsoleteSdkInt"})
 
 	@Override
@@ -57,15 +56,8 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 		
-		fullScreen = getWindow().getDecorView();
-		fullScreen.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener(){
-			@Override
-			public void onSystemUiVisibilityChange(int visibility){
-				if(visibility==0)
-					fullScreen.setSystemUiVisibility(getVisibility());
-			}
-		});
-
+		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		
         webView = findViewById(R.id.webView);
 		
         webView.setWebViewClient(new WebViewClient() {
@@ -88,10 +80,10 @@ public class MainActivity extends AppCompatActivity{
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
         settings.setDisplayZoomControls(false); 
-
-        webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-       
-		webView.setScrollbarFadingEnabled(false);
+		settings.setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
+		
+        webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);     
+		webView.setScrollbarFadingEnabled(true);
         
         settings.setMinimumFontSize(1);
         settings.setMinimumLogicalFontSize(1);
@@ -188,6 +180,7 @@ public class MainActivity extends AppCompatActivity{
 						case R.id.item_project  : link = git + user + tab + String.valueOf(	item.getTitle()).toLowerCase();	break;
 						case R.id.item_package  : link = git + user + tab + String.valueOf(	item.getTitle()).toLowerCase();	break;
 						case R.id.item_settings : link = git + 				String.valueOf(	item.getTitle()).toLowerCase();	break;
+						default : Toast.makeText(MainActivity.this, "Invalid", Toast.LENGTH_SHORT).show();
 					}
 					webView.loadUrl(link);
 					drawer_layout.closeDrawers();
@@ -200,7 +193,8 @@ public class MainActivity extends AppCompatActivity{
 				public boolean onNavigationItemSelected(MenuItem item){
                     switch (item.getItemId()){
 						case R.id.item_help         : link = "https://docs.github.com/"; break;
-						case R.id.item_openInChrome : startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(webView.getUrl())).setPackage("com.android.chrome"));
+						case R.id.item_openInChrome : startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(webView.getUrl())).setPackage("com.android.chrome")); break;
+						default : Toast.makeText(MainActivity.this, "Invalid", Toast.LENGTH_SHORT).show();
 					}
 					webView.loadUrl(link);
 					drawer_layout.closeDrawers();
@@ -210,7 +204,7 @@ public class MainActivity extends AppCompatActivity{
 			
 		}catch (Exception e){
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-		}
+		}	
     }
 	@Override  
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent){  
@@ -263,15 +257,6 @@ public class MainActivity extends AppCompatActivity{
 		((DownloadManager) getSystemService(DOWNLOAD_SERVICE)).enqueue(request);
 		Toast.makeText(getApplicationContext(), msg + " ( " + fileName + " )", Toast.LENGTH_SHORT).show();
 	}
-	public int getVisibility(){
-		return View.SYSTEM_UI_FLAG_LAYOUT_STABLE; 
-	}
-	@Override
-	public void onWindowFocusChanged(boolean hasFocus){
-		if(hasFocus)
-			fullScreen.setSystemUiVisibility(getVisibility());
-		super.onWindowFocusChanged(hasFocus);
-	}
 	@Override
 	public void onConfigurationChanged(Configuration newConfig){
 		super.onConfigurationChanged(newConfig);
@@ -321,6 +306,12 @@ public class MainActivity extends AppCompatActivity{
 			}
 			return true;
 		}
+	}
+	public void onClickLeft(View view){
+		drawer_layout.openDrawer(Gravity.LEFT);
+	}
+	public void onClickRight(View view){
+		drawer_layout.openDrawer(Gravity.RIGHT);
 	}
 }
 
